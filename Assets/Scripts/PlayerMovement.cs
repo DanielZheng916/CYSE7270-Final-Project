@@ -17,6 +17,14 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private LayerMask jumpableGround;
     [SerializeField] private AudioSource jumpSoundEffect;
 
+    public float runSpeed = 40f;
+
+    bool jump = false;
+    bool dash = false;
+
+    public PlayerController2D controller;
+
+
     // Start is called before the first frame update
     void Start()
     {
@@ -30,7 +38,7 @@ public class PlayerMovement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        dirX = Input.GetAxisRaw("Horizontal");
+        dirX = Input.GetAxisRaw("Horizontal") * runSpeed;
         rb.velocity = new Vector2(7f * dirX, rb.velocity.y);
 
         changeAnima();
@@ -41,7 +49,13 @@ public class PlayerMovement : MonoBehaviour
         if (Input.GetButtonDown("Jump") && isGrounded())
         {
             jumpSoundEffect.Play();
-            rb.velocity = new Vector3(rb.velocity.x, 7);
+            rb.velocity = new Vector3(rb.velocity.x, 21);
+            jump = true;
+        }
+
+        if (Input.GetKeyDown(KeyCode.C))
+        {
+            dash = true;
         }
 
         if (dirX > 0)
@@ -75,5 +89,13 @@ public class PlayerMovement : MonoBehaviour
     {
         // create box, move down 1px (to overlap with ground), 
         return Physics2D.BoxCast(coll.bounds.center, coll.bounds.size, 0f, Vector2.down, .1f, jumpableGround);
+    }
+
+    void FixedUpdate()
+    {
+        // Move our character
+        controller.Move(dirX * Time.fixedDeltaTime, jump, dash);
+        jump = false;
+        dash = false;
     }
 }
