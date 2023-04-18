@@ -43,7 +43,7 @@ public class PlayerController2D : MonoBehaviour
 	private float jumpWallDistX = 0; //Distance between player and wall
 	private bool limitVelOnWallJump = false; //For limit wall jump distance with low fps
 
-	private BoxCollider2D coll;
+	private CapsuleCollider2D coll;
 
 	[SerializeField] private LayerMask jumpableGround;
 
@@ -51,7 +51,7 @@ public class PlayerController2D : MonoBehaviour
 	void Start()
 	{
 		Debug.Log("Player Movement Start.");
-		coll = GetComponent<BoxCollider2D>();
+		coll = GetComponent<CapsuleCollider2D>();
 	}
 
 	private void Awake()

@@ -8,7 +8,7 @@ public class PlayerMovement : MonoBehaviour
     private enum MovementState {idle, running, jumping, falling}
     private MovementState state = MovementState.idle;
 
-    private BoxCollider2D coll;
+    private CapsuleCollider2D coll;
     private Rigidbody2D rb;
     private Animator anime;
     private SpriteRenderer sr;
@@ -32,7 +32,7 @@ public class PlayerMovement : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         anime = GetComponent<Animator>();
         sr = GetComponent<SpriteRenderer>();
-        coll = GetComponent<BoxCollider2D>();
+        coll = GetComponent<CapsuleCollider2D>();
     }
 
     // Update is called once per frame
@@ -54,7 +54,7 @@ public class PlayerMovement : MonoBehaviour
             Debug.Log("jump == true");
         }
 
-        if (Input.GetKeyDown(KeyCode.C))
+        if (Input.GetKeyDown(KeyCode.Z))
         {
             dash = true;
         }
@@ -74,11 +74,11 @@ public class PlayerMovement : MonoBehaviour
             state = MovementState.idle;
         }
 
-        if (rb.velocity.y > .1f)
+        if (rb.velocity.y > 0.1f)
         {
             state = MovementState.jumping;
         }
-        else if (rb.velocity.y < -.1f)
+        else if (rb.velocity.y < -0.1f)
         {
             state = MovementState.falling;
         }
