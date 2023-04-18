@@ -43,6 +43,17 @@ public class PlayerController2D : MonoBehaviour
 	private float jumpWallDistX = 0; //Distance between player and wall
 	private bool limitVelOnWallJump = false; //For limit wall jump distance with low fps
 
+	private BoxCollider2D coll;
+
+	[SerializeField] private LayerMask jumpableGround;
+
+	// Start is called before the first frame update
+	void Start()
+	{
+		Debug.Log("Player Movement Start.");
+		coll = GetComponent<BoxCollider2D>();
+	}
+
 	private void Awake()
 	{
 		m_Rigidbody2D = GetComponent<Rigidbody2D>();
@@ -64,17 +75,38 @@ public class PlayerController2D : MonoBehaviour
 		}
 		if (isDashing)
 		{
-			float goRight = 1;
-			if (move > 0)
-            {
-				goRight = 1;
-
-			} else
-            {
-				goRight = -1;
-			}
-			m_Rigidbody2D.velocity = new Vector2(transform.localScale.x * m_DashForce * goRight, 0);
+			m_Rigidbody2D.velocity = new Vector2(transform.localScale.x * m_DashForce, 0);
 			Debug.Log("Dash!");
+		}
+		//only control the player if grounded or airControl is turned on
+		else 
+		{
+			if (m_Rigidbody2D.velocity.y < -limitFallSpeed)
+				m_Rigidbody2D.velocity = new Vector2(m_Rigidbody2D.velocity.x, -limitFallSpeed);
+			// Move the character by finding the target velocity
+			Vector3 targetVelocity = new Vector2(move * 10f, m_Rigidbody2D.velocity.y);
+			// And then smoothing it out and applying it to the character
+			m_Rigidbody2D.velocity = Vector3.SmoothDamp(m_Rigidbody2D.velocity, targetVelocity, ref velocity, m_MovementSmoothing);
+
+			// If the input is moving the player right and the player is facing left...
+			if (move > 0 && !m_FacingRight)
+			{
+				// ... flip the player.
+				Flip();
+			}
+			// Otherwise if the input is moving the player left and the player is facing right...
+			else if (move < 0 && m_FacingRight)
+			{
+				// ... flip the player.
+				Flip();
+			}
+		}
+
+		// If the player should jump...
+		if (isGrounded() && jump)
+		{
+			// Add a vertical force to the player.
+			m_Rigidbody2D.AddForce(new Vector2(0f, m_JumpForce));
 		}
 	}
 
@@ -87,6 +119,23 @@ public class PlayerController2D : MonoBehaviour
 		isDashing = false;
 		yield return new WaitForSeconds(0.5f);
 		canDash = true;
+	}
+
+	private bool isGrounded()
+	{
+		// create box, move down 1px (to overlap with ground), 
+		return Physics2D.BoxCast(coll.bounds.center, coll.bounds.size, 0f, Vector2.down, .1f, jumpableGround);
+	}
+
+	private void Flip()
+	{
+		// Switch the way the player is labelled as facing.
+		m_FacingRight = !m_FacingRight;
+
+		// Multiply the player's x local scale by -1.
+		Vector3 theScale = transform.localScale;
+		theScale.x *= -1;
+		transform.localScale = theScale;
 	}
 
 

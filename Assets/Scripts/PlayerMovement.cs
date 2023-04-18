@@ -39,7 +39,7 @@ public class PlayerMovement : MonoBehaviour
     void Update()
     {
         dirX = Input.GetAxisRaw("Horizontal") * runSpeed;
-        rb.velocity = new Vector2(7f * dirX, rb.velocity.y);
+        //rb.velocity = new Vector2(7f * dirX, rb.velocity.y);
 
         changeAnima();
     }
@@ -49,8 +49,9 @@ public class PlayerMovement : MonoBehaviour
         if (Input.GetButtonDown("Jump") && isGrounded())
         {
             jumpSoundEffect.Play();
-            rb.velocity = new Vector3(rb.velocity.x, 21);
+            //rb.velocity = new Vector3(rb.velocity.x, 21);
             jump = true;
+            Debug.Log("jump == true");
         }
 
         if (Input.GetKeyDown(KeyCode.C))
@@ -61,12 +62,12 @@ public class PlayerMovement : MonoBehaviour
         if (dirX > 0)
         {
             state = MovementState.running;
-            sr.flipX = false;
+            //sr.flipX = false;
         }
         else if (dirX < 0)
         {
             state = MovementState.running;
-            sr.flipX = true;
+            //sr.flipX = true;
         }
         else
         {
