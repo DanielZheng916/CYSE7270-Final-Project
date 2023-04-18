@@ -47,6 +47,8 @@ public class PlayerController2D : MonoBehaviour
 
 	[SerializeField] private LayerMask jumpableGround;
 
+	public SpriteRenderer trailRender;
+
 	// Start is called before the first frame update
 	void Start()
 	{
@@ -115,8 +117,10 @@ public class PlayerController2D : MonoBehaviour
 		animator.SetBool("IsDashing", true);
 		isDashing = true;
 		canDash = false;
+		trailRender.enabled = true;
 		yield return new WaitForSeconds(0.1f);
 		isDashing = false;
+		trailRender.enabled = false;
 		yield return new WaitForSeconds(0.5f);
 		canDash = true;
 	}
