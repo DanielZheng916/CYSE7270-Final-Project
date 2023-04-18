@@ -20,12 +20,12 @@ public class TrailMovement : MonoBehaviour
         if (Input.GetAxisRaw("Horizontal") < 0)
         {
             sr.flipX = true;
-            transform.position = new Vector3(playerTransform.position.x + 0.6f, playerTransform.position.y, playerTransform.position.z);
+            transform.position = new Vector3(playerTransform.position.x + 0.3f, playerTransform.position.y, playerTransform.position.z);
 
         } else
         {
             sr.flipX = false;
-            transform.position = new Vector3(playerTransform.position.x - 0.6f, playerTransform.position.y, playerTransform.position.z);
+            transform.position = new Vector3(playerTransform.position.x - 0.3f, playerTransform.position.y, playerTransform.position.z);
         }
     }
 }

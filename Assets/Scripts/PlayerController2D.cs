@@ -49,6 +49,8 @@ public class PlayerController2D : MonoBehaviour
 
 	public SpriteRenderer trailRender;
 
+	public TrailRenderer trail;
+
 	// Start is called before the first frame update
 	void Start()
 	{
@@ -118,9 +120,11 @@ public class PlayerController2D : MonoBehaviour
 		isDashing = true;
 		canDash = false;
 		trailRender.enabled = true;
-		yield return new WaitForSeconds(0.1f);
+		trail.enabled = true;
+		yield return new WaitForSeconds(0.2f);
 		isDashing = false;
 		trailRender.enabled = false;
+		trail.enabled = false;
 		yield return new WaitForSeconds(0.5f);
 		canDash = true;
 	}
