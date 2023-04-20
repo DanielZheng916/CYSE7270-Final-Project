@@ -20,7 +20,7 @@ public class PlayerMovement : MonoBehaviour
     public float runSpeed = 40f;
 
     bool jump = false;
-    bool dash = false;
+    public bool dash = false;
 
     public PlayerController2D controller;
 

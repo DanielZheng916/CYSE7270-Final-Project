@@ -50,6 +50,8 @@ public class PlayerController2D : MonoBehaviour
 	public SpriteRenderer trailRender;
 
 	public TrailRenderer trail;
+	public EchoEffect echo;
+
 
 	// Start is called before the first frame update
 	void Start()
@@ -80,7 +82,7 @@ public class PlayerController2D : MonoBehaviour
 		if (isDashing)
 		{
 			m_Rigidbody2D.velocity = new Vector2(transform.localScale.x * m_DashForce, 0);
-			Debug.Log("Dash!");
+			//Debug.Log("Dash!");
 		}
 		//only control the player if grounded or airControl is turned on
 		else 
@@ -120,10 +122,12 @@ public class PlayerController2D : MonoBehaviour
 		isDashing = true;
 		canDash = false;
 		trailRender.enabled = true;
+		echo.canGenerate = true;
 		trail.enabled = true;
 		yield return new WaitForSeconds(0.2f);
 		isDashing = false;
 		trailRender.enabled = false;
+		echo.canGenerate = false;
 		trail.enabled = false;
 		yield return new WaitForSeconds(0.5f);
 		canDash = true;
@@ -145,6 +149,11 @@ public class PlayerController2D : MonoBehaviour
 		theScale.x *= -1;
 		transform.localScale = theScale;
 	}
+
+	public bool GetIsDashing()
+    {
+		return isDashing;
+    }
 
 
 }
